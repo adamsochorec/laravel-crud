@@ -12,7 +12,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::latest()->paginate(5);
+        $products = Product::latest()->paginate(2);
         return view('products.index', compact('products'))->with(request()->input('page'));
     }
 
@@ -46,7 +46,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        return view('products.show', compact('product'));
     }
 
     /**
@@ -54,7 +54,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view('products.edit', compact('product'));   
     }
 
     /**
@@ -62,9 +62,16 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'detail' => 'required
+        '
+        ]);
+        // create a new product in the database 
+        $product->update($request->all());
+        // redirect user and send friendly message
+        return redirect()->route('products.index')->with('success', 'Product updated successfuly ');
     }
-
     /**
      * Remove the specified resource from storage.
      */
