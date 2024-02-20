@@ -12,7 +12,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::latest()->paginate(2);
+        $products = Product::latest()->paginate(10); // products per page
         return view('products.index', compact('products'))->with(request()->input('page'));
     }
 
@@ -36,7 +36,7 @@ class ProductController extends Controller
         ]);
         // create a new product in the database 
         Product::create($request->all());
-        // redirect user and send friendly message
+        // redirect user and send success message
         return redirect()->route('products.index')->with('success', 'Product created successfuly ');
 
     }
@@ -69,7 +69,7 @@ class ProductController extends Controller
         ]);
         // create a new product in the database 
         $product->update($request->all());
-        // redirect user and send friendly message
+        // redirect user and send success message
         return redirect()->route('products.index')->with('success', 'Product updated successfuly ');
     }
     /**
@@ -77,6 +77,10 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+//         // redirect user and send success message
+
+        return redirect()->route('products.index')->with('success', 'Product deleted successfuly ');
+
     }
 }
